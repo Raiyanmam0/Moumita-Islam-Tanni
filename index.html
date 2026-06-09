@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moumita Islam Tanni — Finance & Strategy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f5f0e8;
+      --ink: #1a1410;
+      --rust: #c0572a;
+      --gold: #b8924a;
+      --sage: #4a6741;
+      --warm-mid: #8a7560;
+      --paper: #ede8de;
+      --border: rgba(26,20,16,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── Custom cursor ── */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--rust);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid var(--rust);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, opacity 0.2s ease;
+      opacity: 0.5;
+    }
+    body:hover .cursor { opacity: 1; }
+
+    /* ── Noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 48px;
+      z-index: 100;
+      mix-blend-mode: multiply;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex; gap: 36px; list-style: none;
+    }
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--warm-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--rust); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 140px 64px 80px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 6vw, 92px);
+      line-height: 0.95;
+      font-weight: 900;
+      color: var(--ink);
+      opacity: 0;
+      animation: fadeUp 0.9s 0.4s forwards;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--rust);
+    }
+    .hero-sub {
+      margin-top: 28px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--warm-mid);
+      max-width: 380px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.6s forwards;
+    }
+    .hero-cta {
+      margin-top: 48px;
+      display: flex; gap: 16px; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s forwards;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid;
+      transition: all 0.25s ease;
+      cursor: none;
+    }
+    .btn-primary {
+      background: var(--ink);
+      color: var(--cream);
+      border-color: var(--ink);
+    }
+    .btn-primary:hover {
+      background: var(--rust);
+      border-color: var(--rust);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--border);
+    }
+    .btn-ghost:hover {
+      border-color: var(--ink);
+    }
+
+    .hero-right {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding-top: 80px;
+    }
+    .hero-visual {
+      width: 100%;
+      flex: 1;
+      position: relative;
+    }
+    .hero-bg-shape {
+      position: absolute;
+      width: 520px; height: 520px;
+      background: var(--cream);
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      transform: translate(-55%, -50%);
+      opacity: 0;
+      animation: scaleIn 1.2s 0.3s forwards;
+    }
+    .hero-photo-wrap {
+      position: absolute;
+      top: calc(50% - 220px);
+      left: calc(50% - 246px);
+      width: 440px;
+      height: 440px;
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 3;
+      opacity: 0;
+      animation: fadeUp 1s 0.6s forwards;
+    }
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: top center;
+    }
+    .hero-stats {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      padding: 20px 40px 44px;
+      opacity: 0;
+      animation: fadeUp 1s 1s forwards;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 18px 22px;
+      flex: 1;
+      position: relative;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--rust);
+    }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--warm-mid);
+      margin-top: 4px;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px; left: 64px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--warm-mid);
+      display: flex; align-items: center; gap: 12px;
+      opacity: 0;
+      animation: fadeUp 0.9s 1.2s forwards;
+    }
+    .scroll-line {
+      width: 40px; height: 1px;
+      background: var(--warm-mid);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      left: -100%; top: 0; height: 100%; width: 100%;
+      background: var(--rust);
+      animation: scanLine 2s 1.5s infinite;
+    }
+
+    /* ── Sections ── */
+    section { position: relative; z-index: 1; }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 24px; height: 1px;
+      background: var(--rust);
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 54px);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .section-title em {
+      font-style: italic;
+      color: var(--rust);
+    }
+
+    /* ── About ── */
+    #about {
+      padding: 120px 64px;
+      background: var(--paper);
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-text {
+      font-size: 17px;
+      line-height: 1.85;
+      color: var(--warm-mid);
+      margin-top: 24px;
+    }
+    .about-text strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .about-highlights {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .highlight-item {
+      background: var(--cream);
+      padding: 32px 28px;
+      transition: background 0.3s;
+    }
+    .highlight-item:hover { background: white; }
+    .highlight-icon {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+    .highlight-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .highlight-desc {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--warm-mid);
+    }
+
+    /* ── Experience ── */
+    #experience {
+      padding: 120px 64px;
+    }
+    .experience-header {
+      margin-bottom: 64px;
+    }
+    .exp-grid {
+      display: grid;
+      gap: 2px;
+    }
+    .exp-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 40px;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .exp-item:last-child { border-bottom: 1px solid var(--border); }
+    .exp-meta {
+      padding-top: 4px;
+    }
+    .exp-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--warm-mid);
+      margin-bottom: 8px;
+    }
+    .exp-company {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--rust);
+    }
+    .exp-role {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .exp-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .exp-points li {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--warm-mid);
+      padding-left: 16px;
+      position: relative;
+    }
+    .exp-points li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--rust);
+      font-size: 12px;
+    }
+
+    /* ── Skills ── */
+    #skills {
+      padding: 120px 64px;
+      background: var(--ink);
+      color: var(--cream);
+    }
+    #skills .section-label { color: var(--gold); }
+    #skills .section-label::before { background: var(--gold); }
+    #skills .section-title { color: var(--cream); }
+    #skills .section-title em { color: var(--gold); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.06);
+      margin-top: 64px;
+    }
+    .skill-group {
+      background: var(--ink);
+      padding: 40px 36px;
+      transition: background 0.3s;
+    }
+    .skill-group:hover { background: #221c16; }
+    .skill-group-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .skill-tag {
+      padding: 6px 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 12px;
+      color: rgba(245,240,232,0.7);
+      transition: all 0.2s;
+    }
+    .skill-tag:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* ── Education ── */
+    #education {
+      padding: 120px 64px;
+      background: var(--paper);
+    }
+    .edu-timeline {
+      margin-top: 64px;
+      position: relative;
+    }
+    .edu-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .edu-item {
+      padding: 0 0 56px 40px;
+      position: relative;
+    }
+    .edu-item::before {
+      content: '';
+      position: absolute;
+      left: -4px; top: 8px;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--rust);
+      box-shadow: 0 0 0 4px var(--paper);
+    }
+    .edu-year {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--warm-mid);
+      margin-bottom: 8px;
+    }
+    .edu-degree {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .edu-school {
+      font-size: 14px;
+      color: var(--rust);
+      margin-bottom: 8px;
+    }
+    .edu-gpa {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      color: var(--warm-mid);
+    }
+
+    /* ── Extracurricular ── */
+    #extracurricular {
+      padding: 120px 64px;
+    }
+    .ec-card {
+      border: 1px solid var(--border);
+      padding: 40px;
+      margin-top: 24px;
+      position: relative;
+      transition: all 0.3s;
+      background: white;
+    }
+    .ec-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(26,20,16,0.08);
+    }
+    .ec-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--rust), var(--gold));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    .ec-card:hover::after { transform: scaleX(1); }
+    .ec-org {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 8px;
+    }
+    .ec-role {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .ec-date {
+      font-size: 12px;
+      color: var(--warm-mid);
+      margin-bottom: 16px;
+    }
+    .ec-points {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .ec-points li {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--warm-mid);
+      padding-left: 16px;
+      position: relative;
+    }
+    .ec-points li::before {
+      content: '—';
+      position: absolute;
+      left: 0; color: var(--rust);
+      font-size: 11px;
+    }
+
+    /* ── Achievements ── */
+    #achievements {
+      padding: 120px 64px;
+      background: var(--ink);
+    }
+    #achievements .section-label { color: var(--gold); }
+    #achievements .section-label::before { background: var(--gold); }
+    #achievements .section-title { color: var(--cream); }
+    #achievements .section-title em { color: var(--gold); }
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 64px;
+    }
+    .achievement-card {
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 36px;
+      position: relative;
+      transition: all 0.3s;
+      overflow: hidden;
+    }
+    .achievement-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--rust), var(--gold));
+    }
+    .achievement-card:hover {
+      background: rgba(255,255,255,0.04);
+      transform: translateY(-4px);
+    }
+    .achievement-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .achievement-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .achievement-desc {
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(245,240,232,0.5);
+    }
+
+    /* ── Contact ── */
+    #contact {
+      padding: 120px 64px;
+      background: var(--cream);
+    }
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .contact-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 4vw, 62px);
+      font-weight: 900;
+      line-height: 1;
+      color: var(--ink);
+      margin-top: 16px;
+    }
+    .contact-heading em {
+      font-style: italic;
+      color: var(--rust);
+      display: block;
+    }
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 15px;
+      padding: 20px 24px;
+      border: 1px solid var(--border);
+      background: white;
+      transition: all 0.25s;
+    }
+    .contact-link:hover {
+      background: var(--ink);
+      color: var(--cream);
+      border-color: var(--ink);
+      transform: translateX(6px);
+    }
+    .contact-link-icon {
+      font-size: 18px;
+      width: 36px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .contact-link-text { font-size: 13px; }
+    .contact-link-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--warm-mid);
+      transition: color 0.25s;
+    }
+    .contact-link:hover .contact-link-label { color: rgba(245,240,232,0.5); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--ink);
+      color: rgba(245,240,232,0.4);
+      padding: 32px 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer a {
+      color: rgba(245,240,232,0.4);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--gold); }
+    footer span {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: translate(-55%, -50%) scale(0.8); }
+      to { opacity: 1; transform: translate(-55%, -50%) scale(1); }
+    }
+    @keyframes scanLine {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 120px 24px 60px; }
+      .hero-right { display: none; }
+      #about, .contact-inner { grid-template-columns: 1fr; gap: 40px; padding: 80px 24px; }
+      #experience, #skills, #education, #extracurricular, #achievements, #contact { padding: 80px 24px; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .achievements-grid { grid-template-columns: 1fr; }
+      .exp-item { grid-template-columns: 1fr; gap: 8px; }
+      footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">MIT</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-tag">Finance · Strategy · Research</p>
+      <h1 class="hero-name">
+        Moumita<br>
+        Islam <em>Tanni</em>
+      </h1>
+      <p class="hero-sub">
+        Finance graduate with hands-on experience in <strong>market research</strong>, <strong>data analytics</strong>, and <strong>campaign strategy</strong> across FMCG and academic sectors.
+      </p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Get in touch ↓</a>
+        <a href="#experience" class="btn btn-ghost">View work</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual">
+        <div class="hero-bg-shape"></div>
+        <div class="hero-photo-wrap">
+          <img
+            src="photo.jpg"
+            alt="Moumita Islam Tanni"
+            class="hero-photo"
+          />
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-number">3+</div>
+          <div class="stat-label">National Events Organised</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Campaign Concepts Delivered</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">300+</div>
+          <div class="stat-label">Participants Managed</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll to explore
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="reveal">
+      <div class="section-label">Who I am</div>
+      <h2 class="section-title">Finance meets <em>strategy</em></h2>
+      <p class="about-text">
+        I'm a final-semester <strong>BBA Finance student at Bangladesh University of Professionals</strong>, combining quantitative rigour with real-world marketing and research experience. I've supported campaigns for major FMCG brands, assisted postgraduate researchers across three continents, and led some of the largest student competitions in Bangladesh.
+      </p>
+      <p class="about-text" style="margin-top:16px;">
+        My work sits at the intersection of <strong>financial analysis</strong>, <strong>market research</strong>, and <strong>strategic communication</strong> — and I'm always looking for opportunities to create measurable impact.
+      </p>
+    </div>
+    <div class="about-highlights reveal">
+      <div class="highlight-item">
+        <div class="highlight-icon">📊</div>
+        <div class="highlight-title">Data-Driven</div>
+        <div class="highlight-desc">Regression, time series models, SPSS & Stata for research and analytics.</div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-icon">📣</div>
+        <div class="highlight-title">Campaign Strategy</div>
+        <div class="highlight-desc">FMCG campaign support for Spa, Clemon & Mojo during ICC World Cup 2023.</div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-icon">🏆</div>
+        <div class="highlight-title">Competition Finalist</div>
+        <div class="highlight-desc">Designed a full 360° integrated marketing campaign among 100+ teams nationwide.</div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-icon">🤝</div>
+        <div class="highlight-title">Event Leadership</div>
+        <div class="highlight-desc">Organising Secretary at BUPBCC, managing 100–300+ participant national events.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section id="experience">
+    <div class="experience-header reveal">
+      <div class="section-label">Where I've worked</div>
+      <h2 class="section-title">Professional <em>experience</em></h2>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <div class="exp-date">Jun 2023 – Sep 2024</div>
+          <div class="exp-company">Insight Research</div>
+        </div>
+        <div>
+          <div class="exp-role">Freelance Research Analyst</div>
+          <ul class="exp-points">
+            <li>Assisted postgraduate students in Australia, Netherlands, and China with thesis and dissertation development.</li>
+            <li>Conducted statistical analysis including regression and time series models using SPSS and Stata.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <div class="exp-date">Oct 2023 – Dec 2023</div>
+          <div class="exp-company">Mynt Connect</div>
+        </div>
+        <div>
+          <div class="exp-role">Marketing Intern</div>
+          <ul class="exp-points">
+            <li>Supported integrated campaigns for 3 FMCG brands — Spa, Clemon, and Mojo — during ICC World Cup 2023.</li>
+            <li>Contributed 5+ campaign concepts leveraging Meta Business Suite for scheduling and performance tracking.</li>
+            <li>Coordinated cross-functionally with 2+ internal teams and external client representatives.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="reveal">
+      <div class="section-label">What I bring</div>
+      <h2 class="section-title">Skills &amp; <em>tools</em></h2>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-group">
+        <div class="skill-group-name">Technical</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Financial Analysis</span>
+          <span class="skill-tag">Market Research</span>
+          <span class="skill-tag">SPSS</span>
+          <span class="skill-tag">Stata</span>
+          <span class="skill-tag">Statistical Modelling</span>
+          <span class="skill-tag">Microsoft Excel</span>
+          <span class="skill-tag">MS Office Suite</span>
+          <span class="skill-tag">Meta Business Suite</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-name">Strategy &amp; Marketing</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Integrated Campaigns</span>
+          <span class="skill-tag">ATL / BTL</span>
+          <span class="skill-tag">Campaign Analytics</span>
+          <span class="skill-tag">FMCG Sector</span>
+          <span class="skill-tag">Strategic Planning</span>
+          <span class="skill-tag">360° Marketing</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-name">Leadership &amp; Soft Skills</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Event Management</span>
+          <span class="skill-tag">Public Speaking</span>
+          <span class="skill-tag">Team Leadership</span>
+          <span class="skill-tag">Cross-functional Coordination</span>
+          <span class="skill-tag">Problem Statement Design</span>
+          <span class="skill-tag">Recruitment</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education">
+    <div class="reveal">
+      <div class="section-label">Academic background</div>
+      <h2 class="section-title">Education</h2>
+    </div>
+    <div class="edu-timeline">
+      <div class="edu-item reveal">
+        <div class="edu-year">Jul 2022 – Present</div>
+        <div class="edu-degree">Bachelor of Business Administration — Finance</div>
+        <div class="edu-school">Bangladesh University of Professionals (BUP)</div>
+        <span class="edu-gpa">CGPA: 3.01 / 4.00 · Final Semester</span>
+      </div>
+      <div class="edu-item reveal">
+        <div class="edu-year">2019 – 2021</div>
+        <div class="edu-degree">Higher Secondary Certificate — Science</div>
+        <div class="edu-school">Viqarunnisa Noon School and College, Dhaka</div>
+        <span class="edu-gpa">GPA: 5.00 / 5.00</span>
+      </div>
+      <div class="edu-item reveal">
+        <div class="edu-year">2017 – 2019</div>
+        <div class="edu-degree">Secondary School Certificate — Science</div>
+        <div class="edu-school">Viqarunnisa Noon School and College, Dhaka</div>
+        <span class="edu-gpa">GPA: 5.00 / 5.00</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Extracurricular -->
+  <section id="extracurricular">
+    <div class="reveal">
+      <div class="section-label">Beyond the classroom</div>
+      <h2 class="section-title">Extracurricular <em>experience</em></h2>
+    </div>
+    <div class="ec-card reveal">
+      <div class="ec-org">BUP Business and Communication Club (BUPBCC)</div>
+      <div class="ec-role">Organising Secretary</div>
+      <div class="ec-date">Sep 2022 – Present</div>
+      <ul class="ec-points">
+        <li>Coordinated 3+ national and intra-university events including CreADive, Gateway, and Biz Quest, with 100–300+ participants.</li>
+        <li>Developed 5+ case competition problem statements and led end-to-end recruitment and evaluation processes.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Achievements -->
+  <section id="achievements">
+    <div class="reveal">
+      <div class="section-label">Recognition</div>
+      <h2 class="section-title">Achievements &amp; <em>awards</em></h2>
+    </div>
+    <div class="achievements-grid">
+      <div class="achievement-card reveal">
+        <div class="achievement-badge">🥇 National Finalist</div>
+        <div class="achievement-title">IDLC presents CreADive</div>
+        <div class="achievement-desc">
+          Designed a full 360° integrated marketing campaign covering ATL, BTL, and activation strategies across online and offline channels. Competed among 100+ teams nationwide.
+        </div>
+      </div>
+      <div class="achievement-card reveal">
+        <div class="achievement-badge">🥉 2nd Runner-Up</div>
+        <div class="achievement-title">EMK Center — BUP International Quiz League 2020</div>
+        <div class="achievement-desc">
+          Secured a top-3 finish among teams from Bangladesh, India, and Nepal. Demonstrated analytical thinking and teamwork under pressure.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="reveal">
+        <div class="section-label">Let's connect</div>
+        <div class="contact-heading">
+          Open to<br><em>opportunities.</em>
+        </div>
+        <p style="margin-top:24px;font-size:15px;line-height:1.7;color:var(--warm-mid);max-width:360px;">
+          Whether it's a full-time role, a research collaboration, or a strategic project — I'd love to hear from you.
+        </p>
+      </div>
+      <div class="contact-links reveal">
+        <a href="mailto:moumita.tanni02@gmail.com" class="contact-link">
+          <div class="contact-link-icon">✉</div>
+          <div>
+            <div class="contact-link-label">Email</div>
+            <div class="contact-link-text">moumita.tanni02@gmail.com</div>
+          </div>
+        </a>
+        <a href="tel:+8801328804609" class="contact-link">
+          <div class="contact-link-icon">📞</div>
+          <div>
+            <div class="contact-link-label">Phone</div>
+            <div class="contact-link-text">+880 1328 804 609</div>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/moumitaislamtanni" target="_blank" rel="noopener" class="contact-link">
+          <div class="contact-link-icon">🔗</div>
+          <div>
+            <div class="contact-link-label">LinkedIn</div>
+            <div class="contact-link-text">linkedin.com/in/moumitaislamtanni</div>
+          </div>
+        </a>
+        <a href="https://drive.google.com" class="contact-link" target="_blank">
+          <div class="contact-link-icon">📄</div>
+          <div>
+            <div class="contact-link-label">Resume</div>
+            <div class="contact-link-text">Download CV</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span>© 2025 Moumita Islam Tanni</span>
+    <a href="mailto:moumita.tanni02@gmail.com">moumita.tanni02@gmail.com</a>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      setTimeout(() => {
+        ring.style.left = e.clientX + 'px';
+        ring.style.top = e.clientY + 'px';
+      }, 80);
+    });
+    document.querySelectorAll('a, button, .btn').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = '20px';
+        cursor.style.height = '20px';
+        ring.style.opacity = '0';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = '10px';
+        cursor.style.height = '10px';
+        ring.style.opacity = '0.5';
+      });
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    reveals.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
